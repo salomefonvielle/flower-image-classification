@@ -76,17 +76,19 @@ Ces résultats montrent qu’en régime de données limité, le transfert d’ap
 
 ## Structure du projet
 
+```bash
 flower-image-classification/
 │
 ├── prepare_data.py
-├── assets/                # image de test
-├── data/                  # ignoré par git (dataset extrait)
+├── assets/                # test image
+├── data/                  # ignored by git (extracted dataset)
 ├── notebooks/
 │   └── Livrable.ipynb
 ├── requirements.txt
 ├── requirements-lock.txt
+├── .gitignore
 └── README.md
-
+```
 ## Installation
 
 Créer un environnement virtuel et installer les dépendances :
