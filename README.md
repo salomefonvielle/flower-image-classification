@@ -3,70 +3,89 @@ CNN entraîné from scratch vs transfert d’apprentissage
 
 ## Présentation
 
-Ce projet étudie l’impact du pré-entraînement et du biais inductif architectural sur les performances de classification d’images dans un contexte de données limitées.
-
-Deux approches sont comparées :
+Ce projet étudie la classification d’images dans un contexte de données limitées, en comparant deux stratégies d’apprentissage :
 
 - Un réseau de neurones convolutif (CNN) conçu et entraîné from scratch  
-- Un modèle DenseNet121 pré-entraîné (ImageNet) affiné via transfert d’apprentissage  
+- Un modèle DenseNet121 pré-entraîné sur ImageNet, utilisé en transfert d’apprentissage  
 
-L’objectif n’est pas uniquement de comparer les performances, mais d’analyser les dynamiques de généralisation lorsque la quantité de données est restreinte.
+L’objectif est d’analyser les dynamiques de généralisation, la stabilité d’entraînement et l’impact du pré-entraînement lorsque le nombre d’exemples disponibles est restreint.
 
----
+## Contexte scientifique
 
-## Motivation scientifique
+Les réseaux convolutifs profonds nécessitent généralement de grandes quantités de données pour apprendre des représentations visuelles robustes.
 
-Les modèles convolutifs profonds nécessitent généralement de grandes quantités de données pour généraliser correctement.  
-En régime de données limité, les modèles surparamétrés sont sujets au surapprentissage.
+En régime de données limité :
 
-Le transfert d’apprentissage introduit un prior fort issu d’un pré-entraînement sur un large corpus (ImageNet), ce qui restreint implicitement l’espace des hypothèses.
+- Les modèles surparamétrés ont tendance à surapprendre  
+- L’écart entre performance d’entraînement et de validation augmente  
+- Certaines classes peuvent être mal représentées ou ignorées  
+
+Le transfert d’apprentissage introduit un prior inductif fort, en réutilisant des représentations apprises sur un corpus massif (ImageNet).
 
 Ce projet explore :
 
-- La généralisation en régime de données limité  
-- Les effets du surparamétrage  
-- Le rôle des extracteurs de caractéristiques pré-entraînés  
-- La structure des erreurs entre classes visuellement proches  
-
----
+- Le comportement d’un CNN appris from scratch  
+- L’impact de la capacité du modèle sur la généralisation  
+- Le rôle des représentations pré-entraînées  
+- Les différences de stabilité et de structure d’erreur  
 
 ## Méthodologie
 
-- CNN personnalisé composé de quatre couches convolutionnelles (~1–3M paramètres)  
-- DenseNet121 pré-entraîné sur ImageNet  
-- Fine-tuning avec early stopping  
-- Évaluation via :
-  - Accuracy  
-  - Précision / Rappel / F1-score  
-  - Matrices de confusion  
-  - Courbes d’apprentissage  
+### CNN entraîné from scratch
 
----
+- 4 blocs convolutionnels  
+- Environ 1–3 millions de paramètres  
+- Batch Normalization, Dropout, Global Average Pooling  
+- Early stopping  
+- Expérimentations avec réduction de capacité et régularisation renforcée  
+
+### Transfer Learning (DenseNet121)
+
+- Backbone DenseNet121 pré-entraîné (ImageNet)  
+- Poids gelés (feature extractor)  
+- Petite tête de classification (Dense + Dropout)  
+- Optimisation avec Adam  
+- Early stopping  
+
+### Évaluation
+
+Les modèles sont évalués via :
+
+- Accuracy  
+- Précision / Rappel / F1-score  
+- Matrices de confusion  
+- Courbes d’apprentissage (loss et accuracy)  
+- Analyse qualitative des erreurs  
 
 ## Résultats
 
-Le transfert d’apprentissage améliore significativement la stabilité et la capacité de généralisation en comparaison avec l’entraînement from scratch.
+Les CNN entraînés from scratch présentent :
 
-L’analyse des erreurs met en évidence :
+- Un surapprentissage marqué  
+- Un écart important train / validation  
+- Une instabilité des performances selon les classes  
 
-- Une variance plus élevée pour le modèle entraîné sans pré-entraînement  
-- Une réduction des confusions entre classes proches grâce au modèle pré-entraîné  
-- Un effet de régularisation implicite lié au réemploi des représentations  
+En revanche, le modèle DenseNet121 :
 
----
+- Converge rapidement  
+- Généralise de manière stable  
+- Atteint une accuracy de validation de 98 %  
+- Reconnaît correctement l’ensemble des classes  
+
+Ces résultats montrent qu’en régime de données limité, le transfert d’apprentissage améliore fortement la robustesse et la généralisation.
 
 ## Structure du projet
 
-flower-image-classification/  
-│  
-├── prepare_data.py  
-├── data/                  # ignoré par git  
-├── requirements.txt  
-├── requirements-lock.txt  
-├── notebooks/  
-└── README.md  
-
----
+flower-image-classification/
+│
+├── prepare_data.py
+├── assets/                # image de test
+├── data/                  # ignoré par git (dataset extrait)
+├── notebooks/
+│   └── Livrable.ipynb
+├── requirements.txt
+├── requirements-lock.txt
+└── README.md
 
 ## Installation
 
@@ -76,21 +95,3 @@ Créer un environnement virtuel et installer les dépendances :
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-
-## Jeu de données
-
-Le jeu de données n’est pas inclus dans ce dépôt en raison de sa taille.
-
-Il peut être téléchargé à l’adresse suivante :
-
-[INSÉRER LIEN OFFICIEL DU DATASET]
-
-Après téléchargement :
-
-1. Placer le fichier `dataset.zip` à la racine du projet.
-2. Exécuter :
-
-```bash
-python prepare_data.py
-
-
