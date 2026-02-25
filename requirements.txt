@@ -1,5 +1,6 @@
-tensorflow==2.16.2
-numpy==1.26.4
-matplotlib==3.10.8
-scikit-learn==1.8.0
-jupyter==1.1.1
+tensorflow
+numpy
+matplotlib
+scikit-learn
+pillow
+jupyterlab
