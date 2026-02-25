@@ -6,7 +6,7 @@ from pathlib import Path
 # ==============================
 
 PROJECT_ROOT = Path(__file__).parent
-DATA_ZIP = PROJECT_ROOT / "scr"/"dataset.zip"
+DATA_ZIP = PROJECT_ROOT / "src"/"dataset.zip"
 DATA_DIR = PROJECT_ROOT / "data"/ "raw"
 
 
