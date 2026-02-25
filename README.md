@@ -91,6 +91,7 @@ flower-image-classification/
 ```
 ## Installation
 
+Télécharger sur ce lien https://drive.google.com/file/d/1Gkmnb_-XRPSV7K0OIIkT9qTUg-UncGJ6/view?usp=drive_link le zip contenant les données d'entrainement à placer dans le dossier scr.
 Créer un environnement virtuel et installer les dépendances :
 
 ```bash
